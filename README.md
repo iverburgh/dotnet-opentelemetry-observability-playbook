@@ -55,7 +55,7 @@ This playbook covers those cases.
 | Isolated-worker function apps and Service Bus triggers | [azure-functions.md](docs/azure-functions.md) | [ServiceBusTraceContextMiddleware.cs](src/Observability.Functions/ServiceBusTraceContextMiddleware.cs) |
 | KQL for one correlation id, failures by process, ingestion by table | [kql-queries.md](docs/kql-queries.md) | — |
 | Alerts with useful dimensions, summary rules, dashboards as a funnel | [alerts-and-dashboards.md](docs/alerts-and-dashboards.md) | — |
-| Raw payloads in blob storage, found by trace id | [raw-payload-archive.md](docs/raw-payload-archive.md) | — |
+| Raw HTTP payloads in append blobs, found by trace id, best effort | [raw-payload-archive.md](docs/raw-payload-archive.md) | [PayloadArchiveMiddleware.cs](src/Observability.PayloadArchive/PayloadArchiveMiddleware.cs), [PayloadArchiveWriter.cs](src/Observability.PayloadArchive/PayloadArchiveWriter.cs) |
 | Testing telemetry as behaviour, against in-memory exporters | [testing.md](docs/testing.md) | [TelemetryHarness.cs](tests/Observability.Tests/TelemetryHarness.cs) |
 
 Then: [get started](docs/getting-started.md),
@@ -85,6 +85,7 @@ src/
   Observability.Functions/     Isolated-worker middleware: Service Bus trace context, process spans
   Observability.Outbox/        An outbox that stores and restores the trace context of each message
   Observability.AzureMonitor/  The Application Insights exporter with pinned defaults and managed identity
+  Observability.PayloadArchive/ Raw inbound and outbound HTTP payloads in append blobs, with a health check
 samples/
   OrderDemo/                   An API, an outbox and a consumer in one process
 tests/

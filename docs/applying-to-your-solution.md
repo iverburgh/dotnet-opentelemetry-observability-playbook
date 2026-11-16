@@ -59,7 +59,10 @@ with the people who will read the dashboards. See [process logging](process-logg
 - Put business identifiers in scopes at the entry point.
 - Move per-item logs in loops to `Debug`.
 - Move log levels to configuration.
-- Move raw payloads out of logs into a [raw payload archive](raw-payload-archive.md).
+- Move raw payloads out of logs into a [raw payload archive](raw-payload-archive.md): `AddPayloadArchive`
+  and `UsePayloadArchive` for inbound requests, `AddPayloadArchive("container")` on the `HttpClient` of each
+  partner. Start with `WriteAfterResponse` on busy endpoints, and give the managed identity a role on each
+  archive container, not on the account.
 
 Run the [ingestion query](kql-queries.md#ingestion-by-table-and-service) before and after.
 
@@ -83,6 +86,7 @@ starting where volume is highest. See [sampling and cost](sampling-and-cost.md).
 - [ ] Functional process names on every entry point
 - [ ] Health probes not traced; framework logs at `Warning`
 - [ ] Structured logs with scopes; no payloads in logs
+- [ ] Raw partner payloads archived by trace id, best effort, with container-scoped access
 - [ ] Heartbeat alert per service
 - [ ] Alerts on metrics, with dimensions a responder can act on
 - [ ] End-to-end correlation test in the pipeline

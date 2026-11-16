@@ -5,6 +5,7 @@
     <Project Path="src/Observability.AzureMonitor/Observability.AzureMonitor.csproj" />
     <Project Path="src/Observability.Functions/Observability.Functions.csproj" />
     <Project Path="src/Observability.Outbox/Observability.Outbox.csproj" />
+    <Project Path="src/Observability.PayloadArchive/Observability.PayloadArchive.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/OrderDemo/OrderDemo.csproj" />

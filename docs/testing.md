@@ -42,6 +42,34 @@ read headers and spans.
 | Baggage only reaches internal hosts | `PropagationTests` |
 | Configuration errors stop the host | `OptionsTests` in [HostingTests.cs](../tests/Observability.Tests/HostingTests.cs) |
 
+## Payload archive
+
+The archive writes to Azure Storage; the tests do not. `IPayloadArchiveStore` is the seam, and
+[InMemoryPayloadArchiveStore.cs](../tests/Observability.Tests/InMemoryPayloadArchiveStore.cs) behaves like
+an append blob where it matters:
+
+- it rejects an append whose offset is not the current length, as the append-position condition does;
+- its block limit is configurable: the ASP.NET Core tests use 1 KiB, so chunking is tested end-to-end with
+  a 3 KiB body instead of a 4 MiB one;
+- it fails or hangs on request, per operation (`create`, `append`, `access`, `tags`);
+- it records whether instrumentation was suppressed during every call.
+
+Register it before `AddPayloadArchive`; the library adds its own store with `TryAddSingleton`.
+
+| Behaviour | Test |
+|---|---|
+| Request line before the endpoint runs, response appended after, body intact for both sides | `The_request_is_archived_before_the_endpoint_runs_and_the_response_is_appended_after_it` |
+| Blob name and tags carry the trace id; the pointer is logged | `The_blob_is_named_and_tagged_after_the_trace_and_a_pointer_to_it_is_logged` |
+| A storage failure or a hang costs at most the write timeout and a warning | `A_storage_failure_does_not_affect_the_request_and_is_logged_as_a_warning`, `A_hanging_store_delays_a_request_by_at_most_the_write_timeout` |
+| Write after response | `With_write_after_response_nothing_is_written_until_the_response_has_been_sent` |
+| No record glued onto a partial line | `After_a_failed_append_no_further_record_is_glued_onto_the_partial_line` |
+| A configuration refresh with an error switches archiving off, not the requests | `A_configuration_change_is_picked_up_and_an_invalid_one_switches_the_archive_off_until_it_is_fixed` |
+| Degraded, never unhealthy | `An_unreachable_container_is_degraded_not_unhealthy_and_its_tag_query_is_skipped` |
+
+Write-after-response is tested on a `DefaultHttpContext` with a response feature whose `OnCompleted`
+callbacks run when the test says so. Through `TestServer` the callbacks race the client, so that test can
+only wait for the blob, not prove the order.
+
 ## The end-to-end correlation test
 
 In a deployed environment, one test does what support does:

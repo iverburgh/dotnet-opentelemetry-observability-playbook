@@ -88,6 +88,26 @@ The heartbeat is a hosted service and runs while the worker process runs. On a c
 stops when idle, so its heartbeat stops too. Alert on the heartbeat for always-on plans; for consumption,
 alert on missing invocations of a timer function instead.
 
+## Raw payload archive
+
+The [raw payload archive](raw-payload-archive.md) is ASP.NET Core middleware, and there is no separate
+Functions middleware for it. That is a choice, not a gap:
+
+- **With ASP.NET Core integration** (`ConfigureFunctionsWebApplication` and the
+  `Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore` package), HTTP triggers run through the
+  ASP.NET Core pipeline in the worker. `AddPayloadArchive` plus `UsePayloadArchive` work unchanged, and
+  `WriteAfterResponse` uses `HttpResponse.OnCompleted`, so archiving adds no latency to the function.
+- **The built-in HTTP model** (`HttpRequestData`) returns the response as an object that the worker passes
+  to the host after the function returns. There is no point at which the response has been sent, so no
+  write-after-response. A worker middleware could archive it from `GetHttpRequestDataAsync` and
+  `GetHttpResponseData`, at the cost of a second implementation of the record format. Prefer ASP.NET Core
+  integration for HTTP functions you archive.
+
+`Observability.Functions` stays free of HTTP and storage packages; the core needs neither.
+
+Outgoing calls from a function are archived the same way as anywhere else: `AddPayloadArchive("container")`
+on the `HttpClient`.
+
 ## Deployment slots
 
 A slot swap moves the code, not the setting values marked as slot settings. Mark

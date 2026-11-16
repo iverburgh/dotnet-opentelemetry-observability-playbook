@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\src\Observability.AspNetCore\Observability.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Observability.AzureMonitor\Observability.AzureMonitor.csproj" />
     <ProjectReference Include="..\..\src\Observability.Outbox\Observability.Outbox.csproj" />
+    <ProjectReference Include="..\..\src\Observability.PayloadArchive\Observability.PayloadArchive.csproj" />
   </ItemGroup>
 
 </Project>

@@ -76,3 +76,33 @@ Each of these cost someone hours or weeks. Read them before you start.
 - **Health probes traced.** Most of the volume, none of the insight.
 - **Two telemetry pipelines in a function app.** Set `telemetryMode` to `OpenTelemetry` in `host.json`; see
   [Azure Functions](azure-functions.md).
+
+## Archiving raw payloads
+
+See [raw payload archive](raw-payload-archive.md).
+
+- **A string prefix matches too much.** `StartsWith("/api/orders")` also matches `/api/orders-report` and
+  archives it into the wrong container. Match per path segment.
+- **Storage SDK defaults hold requests for minutes.** Several retries and a 100-second network timeout per
+  try, while storage is down, on every archived request. Shorten the retries and bound each write with your
+  own timeout, not the request's abort token.
+- **Append Block takes at most 4 MiB.** A larger record fails unless it is split; a retried block that
+  landed is written twice unless the append is conditional on the position.
+- **A failed write leaves half a line.** Appending the next record glues it to that half. Stop writing to
+  that blob.
+- **Invalid options after a refresh fail every request.** `IOptionsMonitor.CurrentValue` throws on every
+  read. Catch it and switch the archive off, with a warning.
+- **An unhealthy archive takes the instance down.** A best-effort feature reports degraded, never unhealthy.
+- **Tag permissions are separate.** Storage Blob Data Contributor can write blobs but cannot set or query
+  index tags; creating a blob with tags fails. And `Find Blobs by Tags` on the account needs a role on the
+  account: query on the container.
+- **A lenient decoder loses bytes.** Invalid UTF-8 becomes replacement characters, for good. Decode strictly
+  and fall back to base64.
+- **Archive after the exception handler and you archive the wrong response.** Put `UsePayloadArchive` before
+  `UseExceptionHandler`, or the exception passes the archive and its record has no status code.
+- **Headers set when the response starts are missing.** With an empty body the response starts after the
+  archive wrote its record; `WriteAfterResponse` sees the final headers.
+- **Archiving the archive.** The blob client's own HTTP calls become dependency spans in every archived
+  trace. Suppress instrumentation around them, and write the warning log outside that scope: suppressed
+  instrumentation drops log records too.
+- **Buffering breaks streaming.** The whole body is held in memory. Exclude streaming endpoints and clients.

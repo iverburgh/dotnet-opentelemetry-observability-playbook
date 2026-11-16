@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\src\Observability.AzureMonitor\Observability.AzureMonitor.csproj" />
     <ProjectReference Include="..\..\src\Observability.Functions\Observability.Functions.csproj" />
     <ProjectReference Include="..\..\src\Observability.Outbox\Observability.Outbox.csproj" />
+    <ProjectReference Include="..\..\src\Observability.PayloadArchive\Observability.PayloadArchive.csproj" />
   </ItemGroup>
 
 </Project>

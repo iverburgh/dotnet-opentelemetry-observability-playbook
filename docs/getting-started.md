@@ -38,6 +38,11 @@ To see the traces in a real backend:
 | Application Insights | `APPLICATIONINSIGHTS_CONNECTION_STRING` |
 | Any OTLP backend, for example the .NET Aspire dashboard or Jaeger | `OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317` |
 
+To archive the raw `/orders` payloads as well, set `PayloadArchive__ServiceUri` to the blob endpoint of a
+storage account you can sign in to, such as `https://my-account.blob.core.windows.net`, and create the
+`orders-archive` container. The archive is off without it. Pointed at an account that does not exist, the
+demo still answers every request and logs warning 3002; see [raw payload archive](raw-payload-archive.md).
+
 ## Add it to a service
 
 Reference `Observability` and the packages your host needs, then:

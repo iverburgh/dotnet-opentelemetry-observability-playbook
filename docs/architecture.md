@@ -19,6 +19,7 @@ flowchart TB
     F[Observability.Functions] --> core
     X[Observability.Outbox] --> core
     Z[Observability.AzureMonitor] --> core
+    PA[Observability.PayloadArchive<br/>standalone, OpenTelemetry API only]
 ```
 
 | Package | Adds | Code |
@@ -28,6 +29,7 @@ flowchart TB
 | `Observability.Functions` | Joining a Service Bus–triggered invocation to the message's trace, a process span per function | [FunctionsObservabilityExtensions.cs](../src/Observability.Functions/FunctionsObservabilityExtensions.cs) |
 | `Observability.Outbox` | An outbox that stores the trace context with each message and publishes it in the original trace | [OutboxPublisher.cs](../src/Observability.Outbox/OutboxPublisher.cs) |
 | `Observability.AzureMonitor` | The Application Insights exporter with every cost-relevant default pinned, and managed-identity sign-in | [AzureMonitorDefaults.cs](../src/Observability.AzureMonitor/AzureMonitorDefaults.cs) |
+| `Observability.PayloadArchive` | Raw inbound and outbound HTTP payloads in Azure append blobs, one per exchange, found by trace id; best effort, with a degraded-only health check. Does not need the core: it reads the current activity | [PayloadArchiveServiceCollectionExtensions.cs](../src/Observability.PayloadArchive/PayloadArchiveServiceCollectionExtensions.cs) |
 
 The core has no exporter. The host picks one: Application Insights, an OTLP collector, or — in tests — the
 in-memory exporter. Nothing in the core knows which.
