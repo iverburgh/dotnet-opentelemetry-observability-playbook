@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Observability\Observability.csproj" />
+    <ProjectReference Include="..\..\src\Observability.AspNetCore\Observability.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\Observability.AzureMonitor\Observability.AzureMonitor.csproj" />
+    <ProjectReference Include="..\..\src\Observability.Functions\Observability.Functions.csproj" />
+    <ProjectReference Include="..\..\src\Observability.Outbox\Observability.Outbox.csproj" />
+  </ItemGroup>
+
+</Project>

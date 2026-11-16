@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Observability/Observability.csproj" />
+    <Project Path="src/Observability.AspNetCore/Observability.AspNetCore.csproj" />
+    <Project Path="src/Observability.AzureMonitor/Observability.AzureMonitor.csproj" />
+    <Project Path="src/Observability.Functions/Observability.Functions.csproj" />
+    <Project Path="src/Observability.Outbox/Observability.Outbox.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/OrderDemo/OrderDemo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Observability.Tests/Observability.Tests.csproj" />
+  </Folder>
+</Solution>

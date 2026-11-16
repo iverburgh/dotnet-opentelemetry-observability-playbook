@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Observability</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Observability.AspNetCore" />
+    <InternalsVisibleTo Include="Observability.AzureMonitor" />
+    <InternalsVisibleTo Include="Observability.Functions" />
+    <InternalsVisibleTo Include="Observability.Outbox" />
+    <InternalsVisibleTo Include="Observability.Tests" />
+  </ItemGroup>
+
+</Project>

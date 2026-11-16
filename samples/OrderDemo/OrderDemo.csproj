@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>OrderDemo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
+    <ProjectReference Include="..\..\src\Observability.AspNetCore\Observability.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\Observability.AzureMonitor\Observability.AzureMonitor.csproj" />
+    <ProjectReference Include="..\..\src\Observability.Outbox\Observability.Outbox.csproj" />
+  </ItemGroup>
+
+</Project>
