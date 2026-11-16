@@ -113,6 +113,12 @@ From the same monorepo, each on its own:
   build and deploy only what a change touches.
 - [Renovate on Azure DevOps](https://github.com/iverburgh/renovate-azure-devops-playbook) —
   automated dependency updates.
+- [Azure SQL database as code](https://github.com/iverburgh/azure-sql-database-as-code-playbook) —
+  schema, migrations and seed data as SQL projects, built into a DACPAC and deployed per environment.
+- [Service Bus settlement in Azure Functions](https://github.com/iverburgh/azure-functions-service-bus-settlement-playbook) —
+  complete, abandon or dead-letter, with a log line for every settlement decision.
+- [Azure SQL disaster recovery](https://github.com/iverburgh/azure-sql-disaster-recovery-playbook) —
+  a guided point-in-time restore: pause processing, restore, swap, check and resume.
 
 ## License
 
